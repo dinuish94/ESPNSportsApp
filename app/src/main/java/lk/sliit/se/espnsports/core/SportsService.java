@@ -6,18 +6,21 @@ package lk.sliit.se.espnsports.core;
 
 public class SportsService {
 
-    public static final String BASE_URL = "https://api.sportradar.us/cricket-t2/en/schedules/2018-03-25/results.json?api_key=";
     private Callback callback;
     String API_KEY;
 
     public SportsService(Callback callback) {
         this.callback = callback;
-        //TODO: Add API KEY
-        this.API_KEY = "";
+        this.API_KEY = "cqn7fsuue9nczptm6j7a5t98";
     }
 
     public void getLiveSportsUpdates(){
-        Executor exec = new Executor(BASE_URL + API_KEY, callback);
+        Executor exec = new Executor(ServiceEndpoints.DAILY_RESULTS_ENDPOINT + API_KEY, callback);
+        exec.execute();
+    }
+
+    public void getFixtures() {
+        Executor exec = new Executor(ServiceEndpoints.FIXTURES_ENDPOINT + API_KEY, callback);
         exec.execute();
     }
 

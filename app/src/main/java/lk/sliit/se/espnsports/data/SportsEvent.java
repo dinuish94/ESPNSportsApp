@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Created by dinukshakandasamanage on 3/25/18.
  */
@@ -13,6 +15,12 @@ public class SportsEvent {
 
     @SerializedName("tournament")
     private Tournament tournament;
+
+    @SerializedName("scheduled")
+    private String scheduled;
+
+    @SerializedName("competitors")
+    private List<Competitor> competitors;
 
     public Tournament getTournament() {
         return tournament;
