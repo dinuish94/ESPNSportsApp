@@ -39,7 +39,9 @@ public class SportsServiceCallbackListener implements Callback {
     public void onCallbackCompleted(String data) throws JSONException {
         Gson gson = new Gson();
         System.out.println(data);
-        JsonArray results = gson.fromJson(data, JsonElement.class).getAsJsonObject().get("results").getAsJsonArray();
+//        JsonArray results = gson.fromJson(data, JsonElement.class).getAsJsonObject().get("results").getAsJsonArray();
+        JsonArray results = gson.fromJson(data, JsonElement.class).getAsJsonObject().get("sport_events").getAsJsonArray();
+//        Type listType = new TypeToken<ArrayList<SportsEventResult>>(){}.getType();
         Type listType = new TypeToken<ArrayList<SportsEventResult>>(){}.getType();
         output = gson.fromJson(results, listType);
     }

@@ -15,7 +15,7 @@ public class SportsEventResult {
     private SportsEvent sportEvent;
 
     @SerializedName("sport_event_status")
-    private SportsEventResult sportsEventResult;
+    private SportsEventStatus sportsEventStatus;
 
     public SportsEvent getSportsEvent() {
         return sportEvent;
@@ -33,12 +33,12 @@ public class SportsEventResult {
         this.sportEvent = sportEvent;
     }
 
-    public SportsEventResult getSportsEventResult() {
-        return sportsEventResult;
+    public SportsEventStatus getSportsEventStatus() {
+        return sportsEventStatus;
     }
 
-    public void setSportsEventResult(SportsEventResult sportsEventResult) {
-        this.sportsEventResult = sportsEventResult;
+    public void setSportsEventStatus(SportsEventStatus sportsEventStatus) {
+        this.sportsEventStatus = sportsEventStatus;
     }
 
     public JSONObject toJson(){
