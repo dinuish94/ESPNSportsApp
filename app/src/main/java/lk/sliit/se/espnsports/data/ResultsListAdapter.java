@@ -34,6 +34,7 @@ public class ResultsListAdapter extends ArrayAdapter {
                     .inflate(resourceId,null);
         }
         // TODO: set values in UI
+        convertView.setTag(sportsEventResult.getSportEvent().getTournament().getName());
 
         return convertView;
     }
