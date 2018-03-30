@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ESPNSports</string>
+    <string name="rating_prompt">Product Rating %1$s</string>
+    <string name="bottomnav_title_0">Match Summary</string>
 </resources>

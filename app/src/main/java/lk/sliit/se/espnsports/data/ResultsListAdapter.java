@@ -8,8 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import java.util.List;
+
+import lk.sliit.se.espnsports.R;
 
 /**
  * Created by dinukshakandasamanage on 3/29/18.
@@ -33,6 +36,12 @@ public class ResultsListAdapter extends ArrayAdapter {
             convertView = ((LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                     .inflate(resourceId,null);
         }
+
+        TextView tv1 = convertView.findViewById(android.R.id.text1);
+        TextView tv2 = convertView.findViewById(android.R.id.text2);
+
+        tv1.setText(sportsEventResult.getSportsEvent().getTournament().getName());
+        tv2.setText(getContext().getResources().getString(R.string.rating_prompt,sportsEventResult.getSportsEventStatus().getMatchResult()));
         // TODO: set values in UI
         convertView.setTag(sportsEventResult.getSportEvent().getTournament().getName());
 

@@ -1,12 +1,15 @@
 package lk.sliit.se.espnsports;
 
-import android.content.Intent;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -28,11 +31,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private List<SportsEventResult> rawData = new ArrayList<>();
     private ResultsListAdapter resultsListAdapter;
+    AHBottomNavigation bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
+
+//        bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#914242"));
+        bottomNavigation.setAccentColor(Color.parseColor("#1b5a99"));
+        bottomNavigation.setInactiveColor(Color.parseColor("#747474"));
+        bottomNavigation.setElevation(100);
 
         SportsService scl = new SportsService(this);
         scl.getLiveSportsUpdates();
@@ -42,7 +53,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         resultsListAdapter = new ResultsListAdapter(this, rawData);
         lv.setAdapter(resultsListAdapter);
+
+        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(int position, boolean wasSelected) {
+                System.out.println(
+                        position
+                );
+            }
+        });
+
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem("Match Summary", R.drawable.ic_map_24dp);
+        bottomNavigation.addItem(item1);
+
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem("Fixtures", R.drawable.ic_library_books_black_24dp);;
+        bottomNavigation.addItem(item2);
+
     }
+
+//    bottomNavigation.(new AHBottomNavigation.OnTabSelectedListener() {
+//        @Override
+//        public void onTabSelected(int position, boolean wasSelected) {
+////            fragment.updateColor(Color.parseColor(colors[position]));
+//        }
+//    });
 
     @Override
     public void onCallbackCompleted(String data) throws JSONException {
@@ -74,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 //        Intent intent = new Intent(this, DescriptionActivity.class);
-//        intent.putExtra("data", rawData.get(i).getId());
+//        intent.putExtra("data", rawData.get(i).getSportEvent().getTournament().getName());
 //        MainActivity.this.startActivity(intent);
     }
 }
