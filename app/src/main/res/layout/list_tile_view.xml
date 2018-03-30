@@ -31,7 +31,7 @@
             <TableLayout
                 android:id="@+id/tableLayout"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="110dp"
                 android:layout_weight="7"
                 android:measureWithLargestChild="true"
                 android:stretchColumns="0,1,2"
@@ -54,25 +54,6 @@
                         android:text="Game or event title"
                         android:textSize="18sp"
                         android:textStyle="bold" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:textColor="#FFF"
-                    android:weightSum="3">
-
-                    <TextView
-                        android:id="@+id/empty2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="0dp"
-                        android:layout_span="2"
-                        android:layout_weight="0"
-                        android:gravity="center"
-                        android:text="   "
-                        android:textColor="@android:color/holo_blue_dark" />
                 </TableRow>
 
                 <TableRow

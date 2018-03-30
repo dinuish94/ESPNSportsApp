@@ -3,12 +3,7 @@ package lk.sliit.se.espnsports.core;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -28,9 +23,6 @@ public class Executor extends AsyncTask<Integer, Void, String> {
     private String url;
     private Callback cb;
     private String matchId;
-    private static boolean responseSent = false;
-    private static final String API_KEY = "BojZjCDPPqUsugN7z0NkxKxZhz62";
-    private static final String request = "{\"apikey\": \"BojZjCDPPqUsugN7z0NkxKxZhz62\"}";
 
     public Executor(String url, Callback cb) {
         this.url = url;

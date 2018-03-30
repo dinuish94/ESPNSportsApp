@@ -1,6 +1,8 @@
-package lk.sliit.se.espnsports.core;
+package lk.sliit.se.espnsports.utils;
 
 /**
+ * Contains property constants
+ *
  * Created by dinukshakandasamanage on 3/29/18.
  */
 

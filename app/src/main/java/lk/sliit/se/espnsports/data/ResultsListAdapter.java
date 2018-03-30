@@ -11,10 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import lk.sliit.se.espnsports.R;
 
 /**
+ * Feeds match results to list view
+ *
  * Created by dinukshakandasamanage on 3/29/18.
  */
 
@@ -25,7 +29,7 @@ public class ResultsListAdapter extends ArrayAdapter {
 
     private int lastPosition = -1;
 
-    public ResultsListAdapter(@NonNull Context context, @NonNull List<Match> objects) {
+    public ResultsListAdapter(@NonNull Context context, @NonNull List<LiveMatch> objects) {
         super(context, android.R.layout.simple_list_item_activated_2, objects);
         this.resourceId = android.R.layout.simple_list_item_activated_2;
     }
@@ -46,8 +50,7 @@ public class ResultsListAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Match match = (Match) getItem(position);
-
+        LiveMatch liveMatch = (LiveMatch) getItem(position);
         ViewHolder viewHolder;
 
         //initializing ui components of the custom raw
@@ -68,13 +71,12 @@ public class ResultsListAdapter extends ArrayAdapter {
 
         //populate list view custom raw components with data
         lastPosition = position;
-        viewHolder.textTitle.setText(match.getType());
-        viewHolder.textTeamTwo.setText(match.getTeam1());
-        viewHolder.textTeamOne.setText(match.getTeam2());
-        //TODO: get score and summary
-        viewHolder.textSummary.setText(match.getTeam1() +" VS "+match.getTeam2());
-        viewHolder.textScoreTeamTwo.setText(match.getScore());
-        viewHolder.textScoreTeamOne.setText("23-1");
+        viewHolder.textTitle.setText(liveMatch.getType());
+        viewHolder.textTeamTwo.setText(liveMatch.getTeam1());
+        viewHolder.textTeamOne.setText(liveMatch.getTeam2());
+        viewHolder.textSummary.setText(liveMatch.getTeam1() +" VS "+ liveMatch.getTeam2());
+        viewHolder.textScoreTeamOne.setText(liveMatch.getTeam1Score());
+        viewHolder.textScoreTeamTwo.setText(liveMatch.getTeam2Score());
 
         return convertView;
     }

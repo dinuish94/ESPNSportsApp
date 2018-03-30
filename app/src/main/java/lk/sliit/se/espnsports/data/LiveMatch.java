@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by dinukshakandasamanage on 3/30/18.
  */
 
-public class Match {
+public class LiveMatch {
 
     @SerializedName("unique_id")
     private String id;
@@ -30,6 +30,10 @@ public class Match {
 
     @SerializedName("matchStarted")
     private boolean started;
+
+    private String team1Score;
+
+    private String team2Score;
 
     private String score;
 
@@ -97,6 +101,22 @@ public class Match {
 
     public void setScore(String score) {
         this.score = score;
+    }
+
+    public String getTeam1Score() {
+        return team1Score;
+    }
+
+    public void setTeam1Score(String team1Score) {
+        this.team1Score = team1Score;
+    }
+
+    public String getTeam2Score() {
+        return team2Score;
+    }
+
+    public void setTeam2Score(String team2Score) {
+        this.team2Score = team2Score;
     }
 
     public String getSummary() {
