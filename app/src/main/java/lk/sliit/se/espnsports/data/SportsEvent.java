@@ -30,6 +30,22 @@ public class SportsEvent {
         this.tournament = tournament;
     }
 
+    public String getScheduled() {
+        return scheduled;
+    }
+
+    public void setScheduled(String scheduled) {
+        this.scheduled = scheduled;
+    }
+
+    public List<Competitor> getCompetitors() {
+        return competitors;
+    }
+
+    public void setCompetitors(List<Competitor> competitors) {
+        this.competitors = competitors;
+    }
+
     public JSONObject toJson(){
         JSONObject jsonObject = new JSONObject();
         try {

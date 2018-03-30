@@ -7,20 +7,23 @@ package lk.sliit.se.espnsports.core;
 public class SportsService {
 
     private Callback callback;
-    String API_KEY;
 
     public SportsService(Callback callback) {
         this.callback = callback;
-        this.API_KEY = "cqn7fsuue9nczptm6j7a5t98";
     }
 
     public void getLiveSportsUpdates(){
-        Executor exec = new Executor(ServiceEndpoints.DAILY_RESULTS_ENDPOINT + API_KEY, callback);
+        Executor exec = new Executor(ServiceEndpoints.DAILY_RESULTS_ENDPOINT, callback);
         exec.execute();
     }
 
     public void getFixtures() {
-        Executor exec = new Executor(ServiceEndpoints.FIXTURES_ENDPOINT + API_KEY, callback);
+        Executor exec = new Executor(ServiceEndpoints.FIXTURES_ENDPOINT, callback);
+        exec.execute();
+    }
+
+    public void getScore(String matchId) {
+        Executor exec = new Executor(ServiceEndpoints.GET_SCORES_ENDPOINT, callback, matchId);
         exec.execute();
     }
 

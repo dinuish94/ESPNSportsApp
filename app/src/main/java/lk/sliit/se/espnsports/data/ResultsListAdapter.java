@@ -23,27 +23,58 @@ public class ResultsListAdapter extends ArrayAdapter {
     private @LayoutRes
     int resourceId;
 
-    public ResultsListAdapter(@NonNull Context context, @NonNull List<SportsEventResult> objects) {
+    private int lastPosition = -1;
+
+    public ResultsListAdapter(@NonNull Context context, @NonNull List<Match> objects) {
         super(context, android.R.layout.simple_list_item_activated_2, objects);
         this.resourceId = android.R.layout.simple_list_item_activated_2;
+    }
+
+    /**
+     * view holder class to hold UI components of the custom raw
+     *
+     */
+    private static class ViewHolder{
+        TextView textTitle;
+        TextView textTeamOne;
+        TextView textTeamTwo;
+        TextView textScoreTeamOne;
+        TextView textScoreTeamTwo;
+        TextView textSummary;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        SportsEventResult sportsEventResult = (SportsEventResult) getItem(position);
+        Match match = (Match) getItem(position);
+
+        ViewHolder viewHolder;
+
+        //initializing ui components of the custom raw
         if (convertView == null){
-            convertView = ((LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                    .inflate(resourceId,null);
+            viewHolder = new ViewHolder();
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            convertView = inflater.inflate(R.layout.list_tile_view, parent,false);
+            viewHolder.textScoreTeamOne = convertView.findViewById(R.id.txt_team_one_summary);
+            viewHolder.textScoreTeamTwo = convertView.findViewById(R.id.txt_team_two_summary);
+            viewHolder.textSummary = convertView.findViewById(R.id.txt_event_summary);
+            viewHolder.textTeamOne = convertView.findViewById(R.id.txt_team_one);
+            viewHolder.textTeamTwo = convertView.findViewById(R.id.txt_team_two);
+            viewHolder.textTitle = convertView.findViewById(R.id.txt_game_title);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        TextView tv1 = convertView.findViewById(android.R.id.text1);
-        TextView tv2 = convertView.findViewById(android.R.id.text2);
-
-        tv1.setText(sportsEventResult.getSportsEvent().getTournament().getName());
-        tv2.setText(getContext().getResources().getString(R.string.rating_prompt,sportsEventResult.getSportsEventStatus().getMatchResult()));
-        // TODO: set values in UI
-        convertView.setTag(sportsEventResult.getSportEvent().getTournament().getName());
+        //populate list view custom raw components with data
+        lastPosition = position;
+        viewHolder.textTitle.setText(match.getType());
+        viewHolder.textTeamTwo.setText(match.getTeam1());
+        viewHolder.textTeamOne.setText(match.getTeam2());
+        //TODO: get score and summary
+        viewHolder.textSummary.setText(match.getTeam1() +" VS "+match.getTeam2());
+        viewHolder.textScoreTeamTwo.setText(match.getScore());
+        viewHolder.textScoreTeamOne.setText("23-1");
 
         return convertView;
     }

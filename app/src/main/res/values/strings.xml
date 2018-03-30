@@ -2,4 +2,7 @@
     <string name="app_name">ESPNSports</string>
     <string name="rating_prompt">Product Rating %1$s</string>
     <string name="bottomnav_title_0">Match Summary</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
