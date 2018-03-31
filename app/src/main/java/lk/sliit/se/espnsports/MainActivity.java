@@ -8,16 +8,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
 import lk.sliit.se.espnsports.utils.FragmentNames;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity {
 
     AHBottomNavigation bottomNavigation;
 
@@ -59,11 +56,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         AHBottomNavigationItem item2 = new AHBottomNavigationItem("Fixtures", R.drawable.ic_dashboard_schedule);
         bottomNavigation.addItem(item2);
 
-    }
-
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
     }
 
     private void selectFragment(String fragmentName){

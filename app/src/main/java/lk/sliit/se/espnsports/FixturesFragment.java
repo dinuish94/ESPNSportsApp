@@ -40,7 +40,7 @@ public class FixturesFragment extends Fragment implements Callback{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         progress = new ProgressDialog(getContext(), 3);
-        progress.setMessage("Loading results");
+        progress.setMessage("Loading fixtures");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
         progress.setProgress(0);

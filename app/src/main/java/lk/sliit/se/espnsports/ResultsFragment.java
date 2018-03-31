@@ -1,11 +1,15 @@
 package lk.sliit.se.espnsports;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -36,7 +40,7 @@ import lk.sliit.se.espnsports.utils.Constants;
 import lk.sliit.se.espnsports.utils.PropertyFileUtils;
 
 
-public class ResultsFragment extends Fragment implements Callback{
+public class ResultsFragment extends Fragment implements Callback, AdapterView.OnItemClickListener{
 
     private List<LiveMatch> liveMatches;
     private List<LiveMatch> dailyLiveMatches;
@@ -73,6 +77,7 @@ public class ResultsFragment extends Fragment implements Callback{
         resultsListAdapter = new ResultsListAdapter(getActivity(), new ArrayList<LiveMatch>());
 
         ListView upcomingMatcheslv = (ListView) view.findViewById(R.id.resultsList);
+        upcomingMatcheslv.setOnItemClickListener(this);
 
         upcomingMatcheslv.setAdapter(resultsListAdapter);
 
@@ -188,6 +193,16 @@ public class ResultsFragment extends Fragment implements Callback{
                 dailyLiveMatches.add(liveMatch);
             }
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+        Fragment fr = new ScoreSummaryFragment();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_place, fr);
+        fragmentTransaction.commit();
     }
 
 }
