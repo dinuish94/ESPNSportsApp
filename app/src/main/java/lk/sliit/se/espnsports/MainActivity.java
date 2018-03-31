@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         // Styles for bottom navigation
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
-        bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#1b5a99"));
+        bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#ff0099cc"));
         bottomNavigation.setAccentColor(Color.parseColor("#fdfdfd"));
         bottomNavigation.setInactiveColor(Color.parseColor("#bcbcbc"));
         bottomNavigation.setElevation(100);

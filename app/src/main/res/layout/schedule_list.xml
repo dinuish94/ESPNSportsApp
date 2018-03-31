@@ -60,14 +60,32 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:textColor="#FFF"
-                    android:weightSum="7">
+                    android:weightSum="6">
+
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="6"
+                        android:adjustViewBounds="false"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/trophy" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:textColor="#FFF"
+                    android:weightSum="6">
 
                     <TextView
                         android:id="@+id/txt_date"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_span="2"
-                        android:layout_weight="4"
+                        android:layout_weight="6"
                         android:gravity="center"
                         android:text="Date"
                         android:textSize="14sp" />
