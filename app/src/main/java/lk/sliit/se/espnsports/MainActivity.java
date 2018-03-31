@@ -46,10 +46,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem("Match Summary", R.drawable.ic_map_24dp);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem("Match Summary", R.drawable.ic_trophy);
         bottomNavigation.addItem(item1);
 
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem("Fixtures", R.drawable.ic_library_books_black_24dp);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem("Fixtures", R.drawable.ic_dashboard_schedule);
         bottomNavigation.addItem(item2);
 
     }
