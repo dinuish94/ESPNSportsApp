@@ -127,7 +127,7 @@ public class ResultsFragment extends Fragment implements Callback{
                 if (m2.find()) {
                     dailyLiveMatches.get(scoreCount).setTeam2Score(m2.group());
                 } else {
-                    dailyLiveMatches.get(scoreCount).setTeam1Score("-");
+                    dailyLiveMatches.get(scoreCount).setTeam2Score("-");
                 }
                 dailyLiveMatches.get(scoreCount).setScore(jsonObject.get("score").getAsString());
             }
