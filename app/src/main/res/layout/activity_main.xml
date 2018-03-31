@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="lk.sliit.se.espnsports.MainActivity">
+    tools:context="lk.sliit.se.espnsports.ui.MainActivity">
 
     <fragment
-        android:name="lk.sliit.se.espnsports.ResultsFragment"
+        android:name="lk.sliit.se.espnsports.ui.ResultsFragment"
         android:id="@+id/fragment_place"
         android:layout_width="match_parent"
         android:layout_height="0dp"

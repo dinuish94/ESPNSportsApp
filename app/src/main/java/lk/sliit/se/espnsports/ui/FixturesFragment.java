@@ -1,8 +1,9 @@
-package lk.sliit.se.espnsports;
+package lk.sliit.se.espnsports.ui;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,15 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import lk.sliit.se.espnsports.R;
 import lk.sliit.se.espnsports.core.Callback;
 import lk.sliit.se.espnsports.core.SportsService;
 import lk.sliit.se.espnsports.data.ScheduleListAdapter;
@@ -35,6 +36,7 @@ public class FixturesFragment extends Fragment implements Callback{
     private String apiKey;
     private SportsService sportsService;
     private ProgressDialog progress;
+    final static String TAG = "Match_Fixtures";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,9 +66,12 @@ public class FixturesFragment extends Fragment implements Callback{
     }
 
     @Override
-    public void onCallbackCompleted(String data) throws JSONException {
+    public void onCallbackCompleted(String data) {
+
+        Log.i(TAG, "FixturesFragment: Recieved callback data - " + data);
         Gson gson = new Gson();
 
+        try{
         JsonObject jsonObject = gson.fromJson(data, JsonElement.class).getAsJsonObject();
         Type listType;
 
@@ -77,6 +82,9 @@ public class FixturesFragment extends Fragment implements Callback{
             scheduleListAdapter.addAll(upcomingMatches);
             scheduleListAdapter.notifyDataSetChanged();
             progress.hide();
+        }
+        } catch (JsonSyntaxException e){
+            Log.e(TAG, "Failed to parse data", e);
         }
 
     }

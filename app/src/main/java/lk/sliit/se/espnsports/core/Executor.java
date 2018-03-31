@@ -2,6 +2,7 @@ package lk.sliit.se.espnsports.core;
 
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import org.json.JSONException;
 
@@ -15,7 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * H
+ * Handles HTTP calls
  *
  * Created by dinukshakandasamanage on 3/25/18.
  */
@@ -26,6 +27,8 @@ public class Executor extends AsyncTask<Integer, Void, String> {
     private Callback cb;
     private String matchId;
     private String apiKey;
+
+    final static String TAG = "Executor";
 
     public Executor(String url, Callback cb, String apiKey) {
         this.url = url;
@@ -54,47 +57,59 @@ public class Executor extends AsyncTask<Integer, Void, String> {
         return result;
     }
 
-    private String getUrlConnectionResult(URL url) throws IOException {
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/json");
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-        OutputStream stream = conn.getOutputStream();
-        String templateRequest;
+    private String getUrlConnectionResult(URL url) {
 
-        if (null == this.matchId) {
-            templateRequest = "{\"apikey\": \"" + apiKey + "\"}";
-        } else {
-            templateRequest = "{\"apikey\": \"" + apiKey + "\", \"unique_id\": \"" + this.matchId + "\"}";
+        try{
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            OutputStream stream = conn.getOutputStream();
+            String templateRequest;
+
+            if (null == this.matchId) {
+                templateRequest = "{\"apikey\": \"" + apiKey + "\"}";
+            } else {
+                templateRequest = "{\"apikey\": \"" + apiKey + "\", \"unique_id\": \"" + this.matchId + "\"}";
+            }
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
+            writer.write(templateRequest);
+            writer.flush();
+            writer.close();
+            stream.close();
+            conn.connect();
+            return readResponse(conn);
+        } catch (IOException e){
+            Log.e(TAG, "Failed to retrieve data from API", e);
         }
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
-        writer.write(templateRequest);
-        writer.flush();
-        writer.close();
-        stream.close();
-        conn.connect();
-        return readResponse(conn);
+        return null;
     }
 
     @NonNull
-    private String readResponse(HttpURLConnection conn) throws IOException {
-        InputStream stream = conn.getInputStream();
-        InputStreamReader reader = new InputStreamReader(stream);
+    private String readResponse(HttpURLConnection conn) {
 
-        int MAX_READ_SIZE = 1000000;
-        char[] buffer = new char[MAX_READ_SIZE];
-        int readSize;
-        StringBuffer buf = new StringBuffer();
+        try {
+            InputStream stream = conn.getInputStream();
+            InputStreamReader reader = new InputStreamReader(stream);
 
-        while (((readSize = reader.read(buffer)) != -1) && MAX_READ_SIZE > 0) {
-            if (readSize > MAX_READ_SIZE) {
-                readSize = MAX_READ_SIZE;
+            int MAX_READ_SIZE = 1000000;
+            char[] buffer = new char[MAX_READ_SIZE];
+            int readSize;
+            StringBuffer buf = new StringBuffer();
+
+            while (((readSize = reader.read(buffer)) != -1) && MAX_READ_SIZE > 0) {
+                if (readSize > MAX_READ_SIZE) {
+                    readSize = MAX_READ_SIZE;
+                }
+                buf.append(buffer, 0, readSize);
+                MAX_READ_SIZE -= readSize;
             }
-            buf.append(buffer, 0, readSize);
-            MAX_READ_SIZE -= readSize;
+            return buf.toString();
+        } catch (IOException e){
+            Log.e(TAG, "Failed to retrieve data from API", e);
         }
-        return buf.toString();
+        return null;
     }
 
 

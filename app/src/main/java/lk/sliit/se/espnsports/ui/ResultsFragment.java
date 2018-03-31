@@ -1,20 +1,18 @@
-package lk.sliit.se.espnsports;
+package lk.sliit.se.espnsports.ui;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
@@ -31,6 +29,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lk.sliit.se.espnsports.R;
 import lk.sliit.se.espnsports.core.Callback;
 import lk.sliit.se.espnsports.core.SportsService;
 import lk.sliit.se.espnsports.data.LiveMatch;
@@ -54,6 +53,7 @@ public class ResultsFragment extends Fragment implements Callback{
     private String apiKey = "";
     private ProgressDialog progress;
 
+    final static String TAG = "Match_Results";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,6 +90,7 @@ public class ResultsFragment extends Fragment implements Callback{
 
     private void setAPIKey() {
         try {
+            Log.i(TAG, "ResultsFragment: Fetching API key");
             apiKey = PropertyFileUtils.getPropertyValue(Constants.API_KEY_PROPERTY, getActivity().getAssets().open(Constants.APP_PROPERTIES_FILE));
         } catch (IOException e) {
             e.printStackTrace();
@@ -97,69 +98,78 @@ public class ResultsFragment extends Fragment implements Callback{
     }
 
     @Override
-    public void onCallbackCompleted(String data) throws JSONException {
+    public void onCallbackCompleted(String data) {
         Gson gson = new Gson();
 
-        JsonObject jsonObject = gson.fromJson(data, JsonElement.class).getAsJsonObject();
-        Type listType;
+        Log.i(TAG, "ResultsFragment: Recieved callback data - " + data);
 
-        // Check if the request has been to retrieve the matches
-        // if it is we cannot directly process it since the scores are not returned in the same service call
-        if (null != jsonObject.get("matches")){
-            listType = new TypeToken<List<LiveMatch>>(){}.getType();
+        try {
+            JsonObject jsonObject = gson.fromJson(data, JsonElement.class).getAsJsonObject();
+            Type listType;
 
-            liveMatches = gson.fromJson(jsonObject.get("matches").toString(), listType);
+            // Check if the request has been to retrieve the matches
+            // if it is we cannot directly process it since the scores are not returned in the same service call
+            if (null != jsonObject.get("matches")) {
+                listType = new TypeToken<List<LiveMatch>>() {
+                }.getType();
 
-            // Filter the matches that are scheduled for today
-            filterMatchesForToday(liveMatches);
+                liveMatches = gson.fromJson(jsonObject.get("matches").toString(), listType);
 
-            matchCount = dailyLiveMatches.size();
+                // Filter the matches that are scheduled for today
+                filterMatchesForToday(liveMatches);
 
-            sportsService = new SportsService(this, apiKey);
+                matchCount = dailyLiveMatches.size();
 
-            // Retrieve scores for each match
-            for (LiveMatch liveMatch : dailyLiveMatches) {
-                sportsService.getScore(liveMatch.getId());
-            }
+                sportsService = new SportsService(this, apiKey);
 
-        } else if (null != jsonObject.get("matchStarted")){
-
-            // If the element match started is present, this is response for the score retrieval call
-            if (null != jsonObject.get("score")){
-                String score = jsonObject.get("score").getAsString();
-                Pattern pattern = Pattern.compile("[0-9]{1,3}[\\/][0-9]{0,2}");
-                Matcher m1 = pattern.matcher(score.split(" v ")[0].toString());
-                Matcher m2 = pattern.matcher(score.split(" v ")[1].toString());
-
-                if (m1.find()) {
-                    dailyLiveMatches.get(scoreCount).setTeam1Score(m1.group());
-                } else {
-                    dailyLiveMatches.get(scoreCount).setTeam1Score("-");
+                // Retrieve scores for each match
+                for (LiveMatch liveMatch : dailyLiveMatches) {
+                    Log.i(TAG, "ResultsFragment: Retrieving score data for match ID - " + liveMatch.getId());
+                    sportsService.getScore(liveMatch.getId());
                 }
 
-                if (m2.find()) {
-                    dailyLiveMatches.get(scoreCount).setTeam2Score(m2.group());
-                } else {
-                    dailyLiveMatches.get(scoreCount).setTeam2Score("-");
+            } else if (null != jsonObject.get("matchStarted")) {
+
+                // If the element match started is present, this is response for the score retrieval call
+                if (null != jsonObject.get("score")) {
+                    String score = jsonObject.get("score").getAsString();
+                    Pattern pattern = Pattern.compile("[0-9]{1,3}[\\/][0-9]{0,2}");
+                    Matcher m1 = pattern.matcher(score.split(" v ")[0].toString());
+                    Matcher m2 = pattern.matcher(score.split(" v ")[1].toString());
+
+                    if (m1.find()) {
+                        dailyLiveMatches.get(scoreCount).setTeam1Score(m1.group());
+                    } else {
+                        dailyLiveMatches.get(scoreCount).setTeam1Score("-");
+                    }
+
+                    if (m2.find()) {
+                        dailyLiveMatches.get(scoreCount).setTeam2Score(m2.group());
+                    } else {
+                        dailyLiveMatches.get(scoreCount).setTeam2Score("-");
+                    }
+                    dailyLiveMatches.get(scoreCount).setScore(jsonObject.get("score").getAsString());
                 }
-                dailyLiveMatches.get(scoreCount).setScore(jsonObject.get("score").getAsString());
+
+                if (null != jsonObject.get("description")) {
+                    dailyLiveMatches.get(scoreCount).setSummary(jsonObject.get("description").getAsString());
+                }
+
+                scoreCount++;
+
+
+                // Finally when all scores are retrieved, the data is loaded to the list
+                if (matchCount == scoreCount) {
+                    Log.i(TAG, "ResultsFragment: Displaying results");
+                    resultsListAdapter.clear();
+                    resultsListAdapter.addAll(dailyLiveMatches.toArray());
+                    resultsListAdapter.notifyDataSetChanged();
+                    scoreCount = 0;
+                    progress.hide();
+                }
             }
-
-            if (null != jsonObject.get("description")){
-                dailyLiveMatches.get(scoreCount).setSummary(jsonObject.get("description").getAsString());
-            }
-
-            scoreCount ++;
-
-            // Finally when all scores are retrieved, the data is loaded to the list
-            if (matchCount == scoreCount){
-
-                resultsListAdapter.clear();
-                resultsListAdapter.addAll(dailyLiveMatches.toArray());
-                resultsListAdapter.notifyDataSetChanged();
-                scoreCount = 0;
-                progress.hide();
-            }
+        } catch (JsonSyntaxException e){
+            Log.i(TAG, "ResultsFragment: Failed to parse data", e);
         }
     }
 
@@ -169,6 +179,8 @@ public class ResultsFragment extends Fragment implements Callback{
      * @param liveMatches
      */
     private void filterMatchesForToday(List<LiveMatch> liveMatches) {
+
+        Log.i(TAG, "ResultsFragment: Filtering matches scheduled for today..");
         Iterator<LiveMatch> matchIterator = liveMatches.iterator();
 
         while (matchIterator.hasNext()) {

@@ -1,7 +1,9 @@
-package lk.sliit.se.espnsports;
+package lk.sliit.se.espnsports.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import lk.sliit.se.espnsports.R;
 
 public class DescriptionActivity extends AppCompatActivity{
 

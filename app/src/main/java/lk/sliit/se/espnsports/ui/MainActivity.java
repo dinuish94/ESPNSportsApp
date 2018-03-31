@@ -1,4 +1,4 @@
-package lk.sliit.se.espnsports;
+package lk.sliit.se.espnsports.ui;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -8,21 +8,25 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
+import lk.sliit.se.espnsports.R;
 import lk.sliit.se.espnsports.utils.FragmentNames;
 
 public class MainActivity extends AppCompatActivity {
 
     AHBottomNavigation bottomNavigation;
+    final static String TAG = "Main";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Changing action bar color
         ActionBar actionBar = getSupportActionBar();
         ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#ff0099cc"));
         actionBar.setBackgroundDrawable(colorDrawable);
@@ -60,12 +64,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void selectFragment(String fragmentName){
         if (fragmentName.equals(FragmentNames.RESULT_FRAGMENT)){
+            Log.i(TAG,"Fragment Change: Selecting result fragment..");
             Fragment fr = new ResultsFragment();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_place, fr);
             fragmentTransaction.commit();
         } else if(fragmentName.equals(FragmentNames.SCHEDULE_FRAGMENT)){
+            Log.i(TAG,"Fragment Change: Selecting schedule fragment..");
             Fragment fr = new FixturesFragment();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();

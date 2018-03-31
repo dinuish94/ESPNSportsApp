@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="lk.sliit.se.espnsports.ResultsFragment">
+    tools:context="lk.sliit.se.espnsports.ui.ResultsFragment">
 
     <ListView
         android:layout_width="match_parent"
