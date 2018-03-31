@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+
 import lk.sliit.se.espnsports.utils.FragmentNames;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -28,18 +29,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         bottomNavigation.setAccentColor(Color.parseColor("#fdfdfd"));
         bottomNavigation.setInactiveColor(Color.parseColor("#bcbcbc"));
         bottomNavigation.setElevation(100);
+        bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
 
         // Select match results fragment at the start up
         selectFragment(FragmentNames.RESULT_FRAGMENT);
 
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
-            public void onTabSelected(int position, boolean wasSelected) {
+            public boolean onTabSelected(int position, boolean wasSelected) {
                 if (position == 0){
                     selectFragment(FragmentNames.RESULT_FRAGMENT);
                 } else {
                     selectFragment(FragmentNames.SCHEDULE_FRAGMENT);
                 }
+                return true;
             }
         });
 

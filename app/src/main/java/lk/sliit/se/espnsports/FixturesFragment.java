@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +23,22 @@ import lk.sliit.se.espnsports.core.Callback;
 import lk.sliit.se.espnsports.core.SportsService;
 import lk.sliit.se.espnsports.data.ScheduleListAdapter;
 import lk.sliit.se.espnsports.data.ScheduledMatch;
+import lk.sliit.se.espnsports.utils.Constants;
+import lk.sliit.se.espnsports.utils.PropertyFileUtils;
 
 
 public class FixturesFragment extends Fragment implements Callback{
 
-    ScheduleListAdapter scheduleListAdapter;
+    private ScheduleListAdapter scheduleListAdapter;
     private List<ScheduledMatch> upcomingMatches = new ArrayList<>();
-
-    SportsService sp = new SportsService(this);
+    private String apiKey;
+    private SportsService sportsService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        setAPIKey();
+
         View view = inflater.inflate(R.layout.fragment_fixtures, container, false);
         scheduleListAdapter = new ScheduleListAdapter(getActivity(), new ArrayList<ScheduledMatch>());
 
@@ -42,7 +48,8 @@ public class FixturesFragment extends Fragment implements Callback{
         scheduleListAdapter = new ScheduleListAdapter(getActivity(), upcomingMatches);
         upcomingMatcheslv.setAdapter(scheduleListAdapter);
 
-        sp.getFixtures();
+        sportsService = new SportsService(this, apiKey);
+        sportsService.getFixtures();
 
         return view;
     }
@@ -62,6 +69,13 @@ public class FixturesFragment extends Fragment implements Callback{
             scheduleListAdapter.notifyDataSetChanged();
         }
 
+    }
 
+    private void setAPIKey() {
+        try {
+            apiKey = PropertyFileUtils.getPropertyValue(Constants.API_KEY_PROPERTY, getActivity().getAssets().open(Constants.APP_PROPERTIES_FILE));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

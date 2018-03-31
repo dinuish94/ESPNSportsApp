@@ -16,13 +16,13 @@ public class PropertyFileUtils {
     /**
      * Retrieves the given property from the given file
      *
-     * @param fileName
+     * @param inputStream
      * @param property
      * @return
      */
-    public static String getPropertyValue(String fileName, String property){
+    public static String getPropertyValue(String property, InputStream inputStream){
 
-        try (InputStream inputStream = new FileInputStream(fileName)) {
+        try {
 
             Properties properties = new Properties();
 

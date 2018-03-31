@@ -14,6 +14,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,6 +31,8 @@ import lk.sliit.se.espnsports.core.Callback;
 import lk.sliit.se.espnsports.core.SportsService;
 import lk.sliit.se.espnsports.data.LiveMatch;
 import lk.sliit.se.espnsports.data.ResultsListAdapter;
+import lk.sliit.se.espnsports.utils.Constants;
+import lk.sliit.se.espnsports.utils.PropertyFileUtils;
 
 
 public class ResultsFragment extends Fragment implements Callback{
@@ -42,13 +46,18 @@ public class ResultsFragment extends Fragment implements Callback{
 
     // Keeps track of the matches the scores are retrieved for
     private int scoreCount;
-    SportsService sportsService;
+    private SportsService sportsService;
+    private String apiKey = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // Read properties file and get API key
+        setAPIKey();
+
         liveMatches = new ArrayList<>();
         dailyLiveMatches = new ArrayList<>();
-        sportsService = new SportsService(this);
+        sportsService = new SportsService(this, apiKey);
 
         View view = inflater.inflate(R.layout.fragment_data, container, false);
         resultsListAdapter = new ResultsListAdapter(getActivity(), new ArrayList<LiveMatch>());
@@ -64,6 +73,14 @@ public class ResultsFragment extends Fragment implements Callback{
         sportsService.getLiveSportsUpdates();
 
         return view;
+    }
+
+    private void setAPIKey() {
+        try {
+            apiKey = PropertyFileUtils.getPropertyValue(Constants.API_KEY_PROPERTY, getActivity().getAssets().open(Constants.APP_PROPERTIES_FILE));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -85,7 +102,7 @@ public class ResultsFragment extends Fragment implements Callback{
 
             matchCount = dailyLiveMatches.size();
 
-            sportsService = new SportsService(this);
+            sportsService = new SportsService(this, apiKey);
 
             // Retrieve scores for each match
             for (LiveMatch liveMatch : dailyLiveMatches) {

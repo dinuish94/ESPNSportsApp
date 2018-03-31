@@ -15,6 +15,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
+ * H
+ *
  * Created by dinukshakandasamanage on 3/25/18.
  */
 
@@ -23,27 +25,30 @@ public class Executor extends AsyncTask<Integer, Void, String> {
     private String url;
     private Callback cb;
     private String matchId;
+    private String apiKey;
 
-    public Executor(String url, Callback cb) {
+    public Executor(String url, Callback cb, String apiKey) {
         this.url = url;
         this.cb = cb;
+        this.apiKey = apiKey;
     }
 
-    public Executor(String url, Callback cb, String matchId) {
+    public Executor(String url, Callback cb, String apiKey, String matchId) {
         this.url = url;
         this.cb = cb;
         this.matchId = matchId;
+        this.apiKey = apiKey;
     }
 
     @Override
     protected String doInBackground(Integer... integers) {
         String result = null;
 
-        try{
+        try {
             URL url = new URL(this.url +
                     (integers == null || integers.length == 0 ? "" : "/" + integers[0]));
             result = getUrlConnectionResult(url);
-        } catch (IOException e){
+        } catch (IOException e) {
 
         }
         return result;
@@ -58,10 +63,10 @@ public class Executor extends AsyncTask<Integer, Void, String> {
         OutputStream stream = conn.getOutputStream();
         String templateRequest;
 
-        if(null == this.matchId){
-            templateRequest = "{\"apikey\": \"BojZjCDPPqUsugN7z0NkxKxZhz62\"}";
+        if (null == this.matchId) {
+            templateRequest = "{\"apikey\": \"" + apiKey + "\"}";
         } else {
-            templateRequest = "{\"apikey\": \"BojZjCDPPqUsugN7z0NkxKxZhz62\", \"unique_id\": \""+this.matchId+"\"}";
+            templateRequest = "{\"apikey\": \"" + apiKey + "\", \"unique_id\": \"" + this.matchId + "\"}";
         }
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
         writer.write(templateRequest);
