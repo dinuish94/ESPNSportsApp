@@ -1,6 +1,7 @@
 package lk.sliit.se.espnsports;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +34,17 @@ public class FixturesFragment extends Fragment implements Callback{
     private List<ScheduledMatch> upcomingMatches = new ArrayList<>();
     private String apiKey;
     private SportsService sportsService;
+    private ProgressDialog progress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        progress = new ProgressDialog(getContext(), 3);
+        progress.setMessage("Loading results");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
 
         setAPIKey();
 
@@ -67,6 +76,7 @@ public class FixturesFragment extends Fragment implements Callback{
             scheduleListAdapter.clear();
             scheduleListAdapter.addAll(upcomingMatches);
             scheduleListAdapter.notifyDataSetChanged();
+            progress.hide();
         }
 
     }

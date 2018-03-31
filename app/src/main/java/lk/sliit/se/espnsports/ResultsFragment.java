@@ -1,5 +1,6 @@
 package lk.sliit.se.espnsports;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -48,9 +49,18 @@ public class ResultsFragment extends Fragment implements Callback{
     private int scoreCount;
     private SportsService sportsService;
     private String apiKey = "";
+    private ProgressDialog progress;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        progress=new ProgressDialog(getContext(), 3);
+        progress.setMessage("Loading results");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
 
         // Read properties file and get API key
         setAPIKey();
@@ -145,6 +155,7 @@ public class ResultsFragment extends Fragment implements Callback{
                 resultsListAdapter.addAll(dailyLiveMatches.toArray());
                 resultsListAdapter.notifyDataSetChanged();
                 scoreCount = 0;
+                progress.hide();
             }
         }
     }

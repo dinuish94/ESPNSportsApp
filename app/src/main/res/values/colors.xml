@@ -16,5 +16,5 @@
     <color name="colorPrimaryDarkNight">#303F9F</color>
     <color name="colorAccentNight">#FFC107</color>
     <color name="bg_dark">#263238</color>
-    <color name="summary_color">#ede8e8</color>
+    <color name="summary_color">#dbdbdb</color>
 </resources>
